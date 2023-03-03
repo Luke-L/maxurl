@@ -82,7 +82,7 @@ perfect though, I often get it wrong myself :) I can fix it up if you make a mis
 
   - The general format is:
 
-    ```
+    ```ts
     // https://img1.example.com/thumbs/image.jpg -- smaller image (-- denotes a comment)
     //   https://img1.example.com/medium/image.jpg -- a larger image of the one above available on the website that this rule also works for
     //   https://img1.example.com/images/image.jpg -- largest image returned by this rule from any of the above (/medium/ or /thumbs/)
@@ -97,7 +97,7 @@ perfect though, I often get it wrong myself :) I can fix it up if you make a mis
   - Account for query strings or hash strings possibly including a /. The way I usually do it is to add `(?:[?#].*)?$` at the end
   - Try to keep the rule as tight as possible (within reason). For example:
 
-    ```
+    ```ts
     // https://www.example.com/images/image_500.jpg
     //   https://www.example.com/images/image.jpg
     return src.replace(/(\/images\/+[^/?#]+)_[0-9]+(\.[^/.]+(?:[?#].*)?)$/, "$1$2"); // good
@@ -163,7 +163,7 @@ The idea behind pagelink rules is to support a public-facing URL, generally (alw
 
 To document it, I'll give an example with an imaginary social network:
 
-```
+```ts
 if (domain_nowww === "mysocialnetwork.com") {
   // https://mysocialnetwork.com/post/123
 
@@ -231,7 +231,15 @@ if (domain === "image.mysocialnetwork.com") {
   }
 }
 ```
-
+You can also have one rule across multiple sites, if you know they use the same URL formats:
+```ts
+if ((domain_nowww === "PhotositeA.com") || 
+(domain_nowww === "PhotositeB.com") ||
+(domain_nowww === "PhotositeC.com")) {
+	newsrc = src.replace(/\/thumbnail/\/, "/full/");
+	return newsrc;
+}
+```
 ---
 
 Thank you very much for whatever contribution you wish to give to this script, it's really appreciated!
